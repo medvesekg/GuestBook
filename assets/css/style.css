@@ -1,0 +1,205 @@
+* {
+    box-sizing: border-box;
+    font-family: "PT Sans";
+}
+
+h1 {
+
+    font-family: Bentham;
+}
+
+
+html, body {
+
+
+    height: 100%;
+
+}
+
+
+
+.container {
+    max-width: 1100px;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.polovica {
+
+    display: inline-block;
+    width: 50%;
+
+    height: 100%;
+    vertical-align: top;
+    white-space: normal;
+}
+
+.leva-polovica {
+
+    padding: 100px 60px;
+
+}
+
+.sporocilo {
+
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 2px #CF000F;
+    display: none;
+    margin: 10px 0;
+    word-wrap: break-word;
+
+}
+
+.slide-in {
+
+    animation-name: slide-in;
+    animation-duration: 1s;
+    position: relative;
+    animation-timing-function: ease-in-out;
+    display: block;
+
+}
+
+.sporocilo-title {
+
+    white-space: nowrap;
+    margin-bottom: 10px;
+
+}
+
+.sporocilo-title h3 {
+
+    display: inline-block;
+    width: 50%;
+
+}
+
+.info {
+
+    display: inline-block;
+    margin: 0;
+    width: 80%;
+    text-align: right;
+    vertical-align: top;
+
+
+}
+
+.info p {
+
+    margin: 5px;
+    height: 50%;
+}
+
+.sporocilo img {
+
+    width: 20%;
+}
+
+
+
+.crta {
+    border-bottom: 1px solid rgba(30,30,30,0.2);
+    width: 70%;
+}
+
+.crta2 {
+
+    border-bottom: 1px solid rgba(30,30,30,0.2);
+    margin-left: auto;
+    margin-bottom: 20px;
+        width: 20%;
+}
+
+.desna-polovica {
+
+    padding: 0 100px;
+
+}
+
+
+
+h1 {
+
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.red {
+
+    color: #CF000F;
+    font-family: inherit;
+}
+
+input {
+
+    width: 100%;
+    margin: 5px 0 10px 0;
+    border-radius: 5px;
+    height: 30px;
+    outline: none;
+    border: none;
+    box-shadow: 0 0 2px;
+    padding: 0 10px;
+    font-size: 18px;
+
+
+}
+
+label {
+
+    font-size: 12px;
+    font-weight: bold;
+
+}
+
+textarea {
+
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 2px;
+    outline: none;
+    height: 150px;
+    font-size: 18px;
+    margin: 5px 0 10px 0;
+}
+
+.btn {
+
+    background: #CF000F;
+    cursor: pointer;
+    color: white;
+    transition: background 0.5s;
+}
+
+.btn:hover {
+
+    background: #ce1825;
+}
+
+#error-message {
+
+    padding: 10px;
+    background: rgba(247, 22, 22, 0.5);
+
+}
+
+
+
+@keyframes slide-in {
+
+    from {
+
+       left: -20px;
+       opacity: 0;
+    }
+
+    to {
+
+        opacity: 1;
+        left: 0
+
+    }
+}

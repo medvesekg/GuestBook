@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Filton Guestbook</title>
+    <link href="https://fonts.googleapis.com/css?family=Bentham" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="polovica leva-polovica">
+
+            {% for post in seznam %}
+            <div class="sporocilo">
+                <div class="sporocilo-title">
+                   <img src="http://via.placeholder.com/100x100">
+                    <div class="info">
+                        <p>{{post.name}}</p>
+                        <p>{{post.email}}</p>
+                        <p>{{post.date}}</p>
+                    </div>
+                </div>
+                <div class="crta"></div>
+                <p>{{post.message}}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="polovica desna-polovica">
+            <h1><span class="red">Filton</span> guestbook</h1>
+            <div class="crta2"></div>
+            <form method="post">
+                <label for="name">Name</label>
+                <input id="name" name="name">
+                <label for="email">Email</label>
+                <input id="email" name="email">
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+                {% if error %}
+                <div id="error-message">{{error}}</div>
+                {% endif %}
+                <input type="submit" class="btn" value="Send">
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        var sporocila = document.getElementsByClassName("sporocilo");
+
+
+        sporocila[0].classList.add("slide-in");
+
+        var i = 1;
+        var animate = setInterval(function() {
+
+            sporocila[i].classList.add("slide-in");
+            i++
+
+            if (i >= sporocila.length) {
+
+                clearInterval(animate);
+
+            }
+
+        }, 500)
+
+    </script>
+
+</body>
+</html>
