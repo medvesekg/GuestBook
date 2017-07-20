@@ -42,7 +42,7 @@ class MainHandler(BaseHandler):
         message = cgi.escape(self.request.get("message"))
 
         if not name:
-            name = "Anonymus"
+            name = "Anonymous"
 
         if not message:
             error = "Message cannot be empty."
