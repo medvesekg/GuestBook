@@ -23,6 +23,11 @@
                 </div>
                 <div class="crta"></div>
                 <p>{{post.message}}</p>
+
+                <div class="buttons-div">
+                    <button class="btn-edit" data-name="{{post.name}}" data-email="{{post.email}}" data-content="{{post.message}}" data-id="{{post.key.id()}}">Edit</button>
+                    <button class="btn-delete delete-initial" data-id="{{post.key.id()}}">Delete</button>
+                </div>
             </div>
             {% endfor %}
 
@@ -45,7 +50,36 @@
         </div>
     </div>
 
+
+    <div class="modal" id="delete-modal">
+        <div class="modal-box">
+            <h3>Are you sure you want to delete this post?</h3>
+            <button class="btn-cancel">Cancel</button>
+            <form method="post" action = "delete">
+                <input type="hidden" name="post-id" value="" id="final-delete">
+                <button type="submit" class="btn-delete">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="edit-modal">
+        <div class="modal-box">
+            <h3>Edit post</h3>
+            <form method="post" action="edit">
+                <input type="hidden" value="" name="post_id" id="edit-post-id">
+                <input name="new_name" id="new-name">
+                <input name="new_email" id="new-email">
+                <textarea name="new_content" id="new-content"></textarea>
+                <button type="submit" class="btn-update">Update</button>
+            </form>
+               <button class="btn-cancel">Cancel</button>
+        </div>
+    </div>
+
+
     <script>
+
+        // Animation
 
         var sporocila = document.getElementsByClassName("sporocilo");
 
@@ -56,7 +90,8 @@
         var animate = setInterval(function() {
 
             sporocila[i].classList.add("slide-in");
-            i++
+
+            i++;
 
             if (i >= sporocila.length) {
 
@@ -64,7 +99,58 @@
 
             }
 
-        }, 200)
+        }, 200);
+
+
+        // Modal
+
+
+        // Initial Delete Button
+        var deleteButtons = document.getElementsByClassName("delete-initial");
+
+        for (var j = 0; j < deleteButtons.length; j++) {
+
+            deleteButtons[j].onclick = function () {
+
+                document.getElementById("final-delete").value = this.dataset.id;
+                document.getElementById("delete-modal").style.display = "block";
+
+            }
+
+        }
+
+
+        // Cancel Button
+
+        var cancelButtons = document.getElementsByClassName("btn-cancel");
+
+        for (var k = 0; k < cancelButtons.length; k++) {
+
+            cancelButtons[k].onclick = function () {
+
+                document.getElementById("delete-modal").style.display = "none";
+                document.getElementById("edit-modal").style.display = "none";
+            }
+        }
+
+
+
+        // Edit
+
+        var editButtons = document.getElementsByClassName("btn-edit");
+        var editModal = document.getElementById("edit-modal");
+
+        for (var l = 0; l < editButtons.length; l++) {
+
+            editButtons[l].onclick = function () {
+
+                editModal.style.display = "block";
+                document.getElementById("new-name").value = this.dataset.name;
+                document.getElementById("new-email").value = this.dataset.email;
+                document.getElementById("new-content").innerHTML = this.dataset.content;
+                document.getElementById("edit-post-id").value = this.dataset.id
+            }
+        }
 
     </script>
 

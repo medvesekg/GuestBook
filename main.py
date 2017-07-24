@@ -33,7 +33,7 @@ class BaseHandler(webapp2.RequestHandler):
 class MainHandler(BaseHandler):
     def get(self):
 
-        seznam = Post.query().order(-Post.date).fetch()
+        seznam = Post.query(Post.deleted == False).order(-Post.date).fetch()
         params = {"seznam": seznam}
         return self.render_template("hello.html", params=params)
     def post(self):
@@ -53,10 +53,35 @@ class MainHandler(BaseHandler):
         new_post = Post(name=name, email=email, message=message)
         new_post.put()
 
-        seznam = Post.query().order(-Post.date).fetch()
+        seznam = Post.query(Post.deleted == False).order(-Post.date).fetch()
         params = {"seznam": seznam}
         return self.render_template("hello.html", params=params)
 
+class DeleteHandler(BaseHandler):
+    def post(self):
+        post_id = self.request.get("post-id")
+        post = Post.get_by_id(int(post_id))
+        post.deleted = True;
+        post.put()
+        return self.redirect("/")
+
+class EditHandler(BaseHandler):
+    def post(self):
+        post_id = self.request.get("post_id")
+        new_name = cgi.escape(self.request.get("new_name"))
+        new_email = cgi.escape(self.request.get("new_email"))
+        new_content = cgi.escape(self.request.get("new_content"))
+
+        post = Post.get_by_id(int(post_id))
+        post.name = new_name
+        post.email = new_email
+        post.message = new_content
+        post.put()
+
+        return self.redirect("/")
+
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
+    webapp2.Route('/delete', DeleteHandler),
+    webapp2.Route('/edit', EditHandler),
 ], debug=True)
