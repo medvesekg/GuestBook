@@ -23,23 +23,28 @@
                 </div>
                 <div class="crta"></div>
                 <p>{{post.message}}</p>
-
+                {% if user and user.email() == post.email %}
                 <div class="buttons-div">
                     <button class="btn-edit" data-name="{{post.name}}" data-email="{{post.email}}" data-content="{{post.message}}" data-id="{{post.key.id()}}">Edit</button>
                     <button class="btn-delete delete-initial" data-id="{{post.key.id()}}">Delete</button>
                 </div>
+                {% endif %}
             </div>
             {% endfor %}
 
         </div>
         <div class="polovica desna-polovica">
+
+
             <h1><span class="red">Filton</span> guestbook</h1>
             <div class="crta2"></div>
+
+            {% if logged_in == True %}
+            Logged in as {{user.email()}}. <a href="{{login_url}}">Logout</a>
             <form method="post">
-                <label for="name">Name</label>
+                <label for="name">Nickname</label>
                 <input id="name" name="name">
-                <label for="email">Email</label>
-                <input id="email" name="email">
+                <input type="hidden" id="email" name="email" value="{{user.email()}}">
                 <label for="message">Message</label>
                 <textarea id="message" name="message"></textarea>
                 {% if error %}
@@ -47,6 +52,9 @@
                 {% endif %}
                 <input type="submit" class="btn" value="Send">
             </form>
+            {% else %}
+            <p>Please <a href="{{login_url}}">login</a></p>
+            {% endif %}
         </div>
     </div>
 
@@ -68,7 +76,6 @@
             <form method="post" action="edit">
                 <input type="hidden" value="" name="post_id" id="edit-post-id">
                 <input name="new_name" id="new-name">
-                <input name="new_email" id="new-email">
                 <textarea name="new_content" id="new-content"></textarea>
                 <button type="submit" class="btn-update">Update</button>
             </form>
@@ -146,7 +153,7 @@
 
                 editModal.style.display = "block";
                 document.getElementById("new-name").value = this.dataset.name;
-                document.getElementById("new-email").value = this.dataset.email;
+
                 document.getElementById("new-content").innerHTML = this.dataset.content;
                 document.getElementById("edit-post-id").value = this.dataset.id
             }

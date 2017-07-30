@@ -5,7 +5,7 @@ import webapp2
 import cgi
 
 from models import Post
-
+from google.appengine.api import users
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
@@ -32,9 +32,19 @@ class BaseHandler(webapp2.RequestHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
+        user = users.get_current_user()
+        seznam = Post.query(Post.deleted == False).order(-Post.date).fetch(limit=10)
 
-        seznam = Post.query(Post.deleted == False).order(-Post.date).fetch()
-        params = {"seznam": seznam}
+        if user:
+            logged_in = True;
+            login_url = users.create_logout_url('/')
+            params = {"seznam": seznam, "logged_in": logged_in, "login_url": login_url, "user": user}
+        else:
+            logged_in = False
+            login_url = users.create_login_url('/')
+            params = {"seznam": seznam, "logged_in": logged_in, "login_url": login_url}
+
+
         return self.render_template("hello.html", params=params)
     def post(self):
         name = cgi.escape(self.request.get("name"))
@@ -45,17 +55,15 @@ class MainHandler(BaseHandler):
             name = "Anonymous"
 
         if not message:
-            error = "Message cannot be empty."
-            seznam = Post.query().order(-Post.date).fetch()
-            params = {"seznam": seznam, "error": error}
-            return self.render_template("hello.html", params=params)
+
+            return self.redirect("/")
 
         new_post = Post(name=name, email=email, message=message)
         new_post.put()
 
-        seznam = Post.query(Post.deleted == False).order(-Post.date).fetch()
-        params = {"seznam": seznam}
-        return self.render_template("hello.html", params=params)
+
+        return self.redirect("/")
+
 
 class DeleteHandler(BaseHandler):
     def post(self):
@@ -69,12 +77,12 @@ class EditHandler(BaseHandler):
     def post(self):
         post_id = self.request.get("post_id")
         new_name = cgi.escape(self.request.get("new_name"))
-        new_email = cgi.escape(self.request.get("new_email"))
+
         new_content = cgi.escape(self.request.get("new_content"))
 
         post = Post.get_by_id(int(post_id))
         post.name = new_name
-        post.email = new_email
+
         post.message = new_content
         post.put()
 
